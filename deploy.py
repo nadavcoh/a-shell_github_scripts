@@ -137,14 +137,14 @@ def main():
                 t.extractall(EXTRACT_TMP)
 
     # If the archive root contains exactly one entry, it's a directory, and
-    # that directory's name matches the repo name, treat its contents as the
-    # actual source root (handles archives that wrap everything in a single
-    # top-level folder, e.g. "myrepo/...").
+    # that directory's name starts with the repo name, treat its contents as
+    # the actual source root (handles archives that wrap everything in a
+    # single top-level folder, e.g. "myrepo/..." or "myrepo-abc123/...").
     root_entries = os.listdir(EXTRACT_TMP)
     if len(root_entries) == 1:
         sole_entry = root_entries[0]
         sole_path = os.path.join(EXTRACT_TMP, sole_entry)
-        if os.path.isdir(sole_path) and sole_entry == REPO_NAME:
+        if os.path.isdir(sole_path) and sole_entry.startswith(REPO_NAME):
             print(f"  Detected single wrapping folder '{sole_entry}', flattening...")
             SOURCE_ROOT = sole_path
         else:
